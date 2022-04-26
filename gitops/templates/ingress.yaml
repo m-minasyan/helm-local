@@ -15,17 +15,18 @@ spec:
         - name: argocd-server
           port: 80
       middlewares:
-        - name: replacepath
+        - name: stripprefix
   tls:
     certResolver: myresolver
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: replacepath
+  name: stripprefix
 spec:
-  replacePath:
-    path: /
+  stripPrefix:
+    prefixes:
+      - /foobar
 ---
 # Traefik Dashboard
 apiVersion: traefik.containo.us/v1alpha1

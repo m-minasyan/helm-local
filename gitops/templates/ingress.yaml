@@ -9,20 +9,23 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`192.168.10.160`)
+      match: Host(`192.168.10.160/argo`) && PathPrefix(`/argo`)
       priority: 10
       services:
         - name: argocd-server
           port: 80
-    - kind: Rule
-      match: Host(`192.168.10.160`) && Headers(`Content-Type`, `application/grpc`)
-      priority: 11
-      services:
-        - name: argocd-server
-          port: 80
-          scheme: h2c
+      middlewares:
+        - name: replacepath
   tls:
     certResolver: myresolver
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: replacepath
+spec:
+  replacePath:
+    path: /
 ---
 # Traefik Dashboard
 apiVersion: traefik.containo.us/v1alpha1

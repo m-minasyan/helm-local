@@ -15,6 +15,6 @@ container:
   port: 8200
 
 route:
-  host: duplicati-cluster.kuberstar.com
+  host: duplicati-local.kuberstar.com
   path: /
   port: 8200

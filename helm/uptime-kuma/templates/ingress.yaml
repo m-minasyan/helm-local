@@ -1,14 +1,14 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: uptime-cluster.kuberstar.com
+  name: uptime-local.kuberstar.com
   namespace: uptime-kuma
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`uptime-cluster.kuberstar.com`)
+      match: Host(`uptime-local.kuberstar.com`)
       services:
         - name: uptime-kuma
           port: 3001

@@ -2,20 +2,20 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: argocd-cluster.kuberstar.com
+  name: argocd-local.kuberstar.com
   namespace: argocd
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`argocd-cluster.kuberstar.com`)
+      match: Host(`argocd-local.kuberstar.com`)
       priority: 10
       services:
         - name: argocd-server
           port: 80
     - kind: Rule
-      match: Host(`argocd-cluster.kuberstar.com`) && Headers(`Content-Type`, `application/grpc`)
+      match: Host(`argocd-local.kuberstar.com`) && Headers(`Content-Type`, `application/grpc`)
       priority: 11
       services:
         - name: argocd-server
@@ -28,13 +28,13 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: traefik-cluster.kuberstar.com
+  name: traefik-local.kuberstar.com
   namespace: traefik
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`traefik-cluster.kuberstar.com`)
+    - match: Host(`traefik-local.kuberstar.com`)
       kind: Rule
       middlewares:
         - name: traefik-dashboard-basicauth
@@ -58,14 +58,14 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: grafana-cluster.kuberstar.com
+  name: grafana-local.kuberstar.com
   namespace: monitoring
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`grafana-cluster.kuberstar.com`)
+      match: Host(`grafana-local.kuberstar.com`)
       services:
         - name: grafana
           port: 80
@@ -76,14 +76,14 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: longhorn-cluster.kuberstar.com
+  name: longhorn-local.kuberstar.com
   namespace: longhorn
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`longhorn-cluster.kuberstar.com`)
+      match: Host(`longhorn-local.kuberstar.com`)
       services:
         - name: longhorn-frontend
           port: 80
@@ -94,14 +94,14 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: portainer-cluster.kuberstar.com
+  name: portainer-local.kuberstar.com
   namespace: portainer
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`portainer-cluster.kuberstar.com`)
+      match: Host(`portainer-local.kuberstar.com`)
       services:
         - name: portainer
           port: 9000
@@ -112,14 +112,14 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: docker-registry-cluster.kuberstar.com
+  name: docker-registry-local.kuberstar.com
   namespace: docker-registry
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`docker-registry-cluster.kuberstar.com`)
+      match: Host(`docker-registry-local.kuberstar.com`)
       services:
         - name: docker-registry
           port: 5000

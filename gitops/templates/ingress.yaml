@@ -94,7 +94,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`portainer-local`)
+      match: Host(`portainer.local`)
       services:
         - name: portainer
           port: 9000

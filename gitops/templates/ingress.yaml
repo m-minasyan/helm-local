@@ -9,7 +9,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`192.168.10.160`)
+      match: Host(`argocd.local`)
       priority: 10
       services:
         - name: argocd-server
@@ -27,7 +27,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`traefik-local.kuberstar.com`)
+    - match: Host(`traefik.local`)
       kind: Rule
       middlewares:
         - name: traefik-dashboard-basicauth
@@ -58,7 +58,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`grafana-local.kuberstar.com`)
+      match: Host(`grafana.local`)
       services:
         - name: grafana
           port: 80
@@ -76,7 +76,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`longhorn-local.kuberstar.com`)
+      match: Host(`longhorn.local`)
       services:
         - name: longhorn-frontend
           port: 80
@@ -94,7 +94,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`portainer-local.kuberstar.com`)
+      match: Host(`portainer-local`)
       services:
         - name: portainer
           port: 9000
@@ -112,7 +112,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`docker-registry-local.kuberstar.com`)
+      match: Host(`docker-registry.local`)
       services:
         - name: docker-registry
           port: 5000

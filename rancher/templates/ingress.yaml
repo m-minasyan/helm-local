@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`rancher-local.kuberstar.com`)
+      match: Host(`rancher.local`)
       services:
         - name: rancher
           port: 80

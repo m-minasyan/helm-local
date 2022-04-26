@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`jenkins-local.kuberstar.com`)
+      match: Host(`jenkins.local`)
       services:
         - name: jenkins
           port: 8080

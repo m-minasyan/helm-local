@@ -28,7 +28,7 @@ metadata:
 spec:
   stripPrefixRegex:
     regex:
-      - "/*"
+      - "/(.*)"
 ---
 # Traefik Dashboard
 apiVersion: traefik.containo.us/v1alpha1

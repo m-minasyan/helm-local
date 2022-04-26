@@ -1,0 +1,139 @@
+# ArgoCD
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-cluster.kuberstar.com
+  namespace: argocd
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`argocd-cluster.kuberstar.com`)
+      priority: 10
+      services:
+        - name: argocd-server
+          port: 80
+    - kind: Rule
+      match: Host(`argocd-cluster.kuberstar.com`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: argocd-server
+          port: 80
+          scheme: h2c
+  tls:
+    certResolver: myresolver
+---
+# Traefik Dashboard
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-cluster.kuberstar.com
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`traefik-cluster.kuberstar.com`)
+      kind: Rule
+      middlewares:
+        - name: traefik-dashboard-basicauth
+          namespace: traefik
+      services:
+        - name: api@internal
+          kind: TraefikService
+  tls:
+    certResolver: myresolver
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-dashboard-basicauth
+  namespace: traefik
+spec:
+  basicAuth:
+    secret: traefik-dashboard-auth
+---
+# ArgoCD
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-cluster.kuberstar.com
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`grafana-cluster.kuberstar.com`)
+      services:
+        - name: grafana
+          port: 80
+  tls:
+    certResolver: myresolver
+---
+# Longhorn
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-cluster.kuberstar.com
+  namespace: longhorn
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`longhorn-cluster.kuberstar.com`)
+      services:
+        - name: longhorn-frontend
+          port: 80
+  tls:
+    certResolver: myresolver
+---
+# Portainer
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: portainer-cluster.kuberstar.com
+  namespace: portainer
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`portainer-cluster.kuberstar.com`)
+      services:
+        - name: portainer
+          port: 9000
+  tls:
+    certResolver: myresolver
+---
+# Docker Registry
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: docker-registry-cluster.kuberstar.com
+  namespace: docker-registry
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`docker-registry-cluster.kuberstar.com`)
+      services:
+        - name: docker-registry
+          port: 5000
+      middlewares:
+        - name: docker-registry-auth
+          namespace: docker-registry
+  tls:
+    certResolver: myresolver
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: docker-registry-auth
+  namespace: docker-registry
+spec:
+  basicAuth:
+    secret: docker-registry-auth

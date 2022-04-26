@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: longhorn-test-minio
+  namespace: default
+  labels:
+    app: longhorn-test-minio
+spec:
+  volumes:
+    - name: minio-volume
+      hostPath:
+        path: /home/ubuntu/backupstore/
+    - name: minio-certificates
+      secret:
+        secretName: minio-secret
+        items:
+          - key: AWS_CERT
+            path: public.crt
+          - key: AWS_CERT_KEY
+            path: private.key
+
+  containers:
+    - name: minio
+      image: longhornio/minio:RELEASE.2020-10-18T21-54-12Z
+      command: ["sh", "-c", "mkdir -p /storage/backupbucket && mkdir -p /root/.minio/certs && ln -s /root/certs/private.key /root/.minio/certs/private.key && ln -s /root/certs/public.crt /root/.minio/certs/public.crt && exec /usr/bin/minio server /storage"]
+      env:
+        - name: MINIO_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: AWS_ACCESS_KEY_ID
+        - name: MINIO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: AWS_SECRET_ACCESS_KEY
+      ports:
+        - containerPort: 9000
+      volumeMounts:
+        - name: minio-volume
+          mountPath: "/storage"
+        - name: minio-certificates
+          mountPath: "/root/certs"
+          readOnly: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-service
+  namespace: default
+spec:
+  selector:
+    app: longhorn-test-minio
+  ports:
+    - port: 9000
+      targetPort: 9000
+      protocol: TCP
+  sessionAffinity: ClientIP

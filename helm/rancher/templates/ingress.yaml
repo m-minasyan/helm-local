@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: rancher-cluster.kuberstar.com
+  namespace: cattle-system
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`rancher-cluster.kuberstar.com`)
+      services:
+        - name: rancher
+          port: 80
+  tls:
+    certResolver: myresolver

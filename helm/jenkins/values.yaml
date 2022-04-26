@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: minasyanam/jenkins-in-docker-arm64
+  pullPolicy: IfNotPresent
+
+nameOverride: "jenkins"
+fullnameOverride: "jenkins"
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  clusterIP: 10.43.79.175

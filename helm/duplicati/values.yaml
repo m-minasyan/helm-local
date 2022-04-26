@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/linuxserver/duplicati
+  pullPolicy: IfNotPresent
+
+nameOverride: "duplicati"
+fullnameOverride: "duplicati"
+
+service:
+  type: ClusterIP
+  port: 8200
+
+container:
+  port: 8200
+
+route:
+  host: duplicati-cluster.kuberstar.com
+  path: /
+  port: 8200

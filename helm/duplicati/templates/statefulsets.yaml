@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "duplicati.fullname" . }}
+  labels:
+    {{- include "duplicati.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "duplicati.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+        {{- with .Values.podAnnotations }}
+      annotations:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+          {{- include "duplicati.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ include "duplicati.fullname" . }}
+          env:
+            - { name: PUID, value: "0" }
+            - { name: PGID, value: "0" }
+            - { name: TZ, value: "Asia/Yerevan" }
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.container.port }}
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /backup
+              name: backupstore
+              readOnly: false
+            - mountPath: /config
+              name: {{ include "duplicati.fullname" . }}-config
+              readOnly: false
+            - mountPath: /backups
+              name: {{ include "duplicati.fullname" . }}-backups
+              readOnly: false
+#            - mountPath: /restore
+#              name: {{ include "duplicati.fullname" . }}-restore
+#              readOnly: false
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: backupstore
+          hostPath: { path: /home/ubuntu/backupstore }
+        - name: {{ include "duplicati.fullname" . }}-config
+          hostPath: { path: /home/ubuntu/{{ include "duplicati.fullname" . }}-data/config }
+        - name: {{ include "duplicati.fullname" . }}-backups
+          hostPath: { path: /home/ubuntu/{{ include "duplicati.fullname" . }}-data/backups }
+#  volumeClaimTemplates:
+#    - metadata:
+#        name: {{ include "duplicati.fullname" . }}-restore
+#      spec:
+#        accessModes: [ ReadWriteOnce ]
+#        resources:
+#          requests:
+#            storage: 8Gi
+  podManagementPolicy: OrderedReady
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 10
+  serviceName: {{ include "duplicati.fullname" . }}
+  updateStrategy:
+    type: OnDelete

@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Values.fullnameOverride }}
+  namespace: duplicati
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{ .Values.route.host }}`)
+      kind: Rule
+      services:
+        - name: {{ .Values.fullnameOverride }}
+          port: {{ .Values.route.port }}
+          kind: Service
+  tls:
+    certResolver: myresolver

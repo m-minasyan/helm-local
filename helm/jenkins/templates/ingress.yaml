@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jenkins-cluster.kuberstar.com
+  namespace: jenkins
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`jenkins-cluster.kuberstar.com`)
+      services:
+        - name: jenkins
+          port: 8080
+  tls:
+    certResolver: myresolver

@@ -9,7 +9,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`192.168.10.160`) && PathPrefix(`/argo(.*)`)
+      match: Host(`192.168.10.160`) && PathPrefix(`/argo`)
       priority: 10
       services:
         - name: argocd-server

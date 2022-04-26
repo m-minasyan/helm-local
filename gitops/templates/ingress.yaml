@@ -16,6 +16,7 @@ spec:
           port: 80
       middlewares:
         - name: stripprefix
+          namespace: argocd
   tls:
     certResolver: myresolver
 ---
@@ -23,6 +24,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: stripprefix
+  namespace: argocd
 spec:
   stripPrefix:
     prefixes:

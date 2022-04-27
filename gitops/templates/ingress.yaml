@@ -42,22 +42,6 @@ spec:
   basicAuth:
     secret: traefik-dashboard-auth
 ---
-# ArgoCD
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: grafana-local.kuberstar.com
-  namespace: monitoring
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - kind: Rule
-      match: Host(`grafana-local.kuberstar.com`)
-      services:
-        - name: grafana
-          port: 80
----
 # Longhorn
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -73,20 +57,4 @@ spec:
       services:
         - name: longhorn-frontend
           port: 80
----
-# Portainer
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: portainer-local.kuberstar.com
-  namespace: portainer
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - kind: Rule
-      match: Host(`portainer-local.kuberstar.com`)
-      services:
-        - name: portainer
-          port: 9000
 ---

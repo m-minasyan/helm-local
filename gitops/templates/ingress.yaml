@@ -9,8 +9,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`argocd.local`)
-      priority: 10
+      match: Host(`argocd-local.kuberstar.com`)
       services:
         - name: argocd-server
           port: 80

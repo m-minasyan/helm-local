@@ -13,8 +13,6 @@ spec:
       services:
         - name: argocd-server
           port: 80
-  tls:
-    certResolver: myresolver
 ---
 # Traefik Dashboard
 apiVersion: traefik.containo.us/v1alpha1
@@ -34,8 +32,6 @@ spec:
       services:
         - name: api@internal
           kind: TraefikService
-  tls:
-    certResolver: myresolver
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -61,8 +57,6 @@ spec:
       services:
         - name: grafana
           port: 80
-  tls:
-    certResolver: myresolver
 ---
 # Longhorn
 apiVersion: traefik.containo.us/v1alpha1
@@ -79,8 +73,6 @@ spec:
       services:
         - name: longhorn-frontend
           port: 80
-  tls:
-    certResolver: myresolver
 ---
 # Portainer
 apiVersion: traefik.containo.us/v1alpha1
@@ -97,8 +89,6 @@ spec:
       services:
         - name: portainer
           port: 9000
-  tls:
-    certResolver: myresolver
 ---
 # Docker Registry
 apiVersion: traefik.containo.us/v1alpha1
@@ -118,8 +108,6 @@ spec:
       middlewares:
         - name: docker-registry-auth
           namespace: docker-registry
-  tls:
-    certResolver: myresolver
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware

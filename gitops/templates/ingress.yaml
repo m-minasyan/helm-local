@@ -26,7 +26,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`traefik.local`)
+    - match: Host(`traefik-local.kuberstar.com`)
       kind: Rule
       middlewares:
         - name: traefik-dashboard-basicauth
@@ -57,7 +57,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`grafana.local`)
+      match: Host(`grafana-local.kuberstar.com`)
       services:
         - name: grafana
           port: 80
@@ -75,7 +75,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`longhorn.local`)
+      match: Host(`longhorn-local.kuberstar.com`)
       services:
         - name: longhorn-frontend
           port: 80
@@ -93,7 +93,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`portainer.local`)
+      match: Host(`portainer-local.kuberstar.com`)
       services:
         - name: portainer
           port: 9000
@@ -111,7 +111,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`docker-registry.local`)
+      match: Host(`docker-registry-local.kuberstar.com`)
       services:
         - name: docker-registry
           port: 5000

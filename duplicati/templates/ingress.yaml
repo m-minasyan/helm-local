@@ -13,5 +13,3 @@ spec:
         - name: {{ .Values.fullnameOverride }}
           port: {{ .Values.route.port }}
           kind: Service
-  tls:
-    certResolver: myresolver

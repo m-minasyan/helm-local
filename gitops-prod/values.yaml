@@ -1,0 +1,5 @@
+service:
+  traefik: traefik.test.com
+  grafana: grafana.test.com
+  argocd: argocd.test.com
+  longhorn: longhorn.test.com

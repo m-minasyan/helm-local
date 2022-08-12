@@ -9,7 +9,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`argocd-local.kuberstar.com`)
+      match: Host(`{{ .Values.service.argocd }}`)
       services:
         - name: argocd-server
           port: 80
@@ -24,7 +24,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`traefik-local.kuberstar.com`)
+    - match: Host(`{{ .Values.service.traefik }}`)
       kind: Rule
       middlewares:
         - name: traefik-dashboard-basicauth
@@ -53,8 +53,23 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`longhorn-local.kuberstar.com`)
+      match: Host(`{{ .Values.service.longhorn }}`)
       services:
         - name: longhorn-frontend
           port: 80
 ---
+# Grafana
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.service.grafana }}`)
+      services:
+        - name: grafana
+          port: 80
